@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  
+    <style>
+        form{
+      margin: 10px;
+      padding:10px;
+      text-align: center;
+    }
+    label{
+      font-size: large;
+      font-weight: bold
+    }
+
+    .header{
+      background: linear-gradient(10deg,#ff0081,#6827b0);
+      border-radius: 0 0 50% 50%/0 0 100% 100%;
+      transform: scaleX(1.0);
+    }
+    .footer{
+      background: linear-gradient(10deg,#ff0081,#6827b0);
+      border-radius:  50% 50% /100% 100% 0 0;
+      transform: scaleX(1.0);
+      height: auto;
+    }
+    button{
+        margin-top: 20px;
+        justify-content: space-evenly;
+    }
+    
+    .modal-body{
+      background-color: #0d7e92;
+    }
+    h1{
+        text-align: center;
+    }
+    .alert{
+      width: 50%;
+      text-align: center;
+      font-size: 25px;
+      background-color: white;
+      padding: 10px 20px;
+      border-radius: 15px;
+      margin-left: 200px;
+      font-weight: 700;
+      display: none;
+
+    }
+    </style>
+</head>
+<body>
+    <!-- <div class="modal fade" id="services"> -->
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div class="header">
+                <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="form"></button>
+              <!-- <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close"></button> -->
+              <h1 class="text-center" style="color: green; text-transform:capitalize; font-size: 30px;">Welcome to Tosh Business  Services</h1>
+              <h1 class="text-center" style="color: blue; text-transform:capitalize;font-size: 30px; ">Please fill the form </h1>
+              </div>
+              <div class="alert"><img src="./images/tick.jpg" alt="" width="50px"> Your Message send</div>
+              <form action="" id="form">
+                <label>Name</label>
+                <input type="text" placeholder="Enter your name: " id="name"><br><br>
+              <label>Mobile</label>
+                <input type="text" placeholder="Enter your mobile number: " id="Mobile"><br><br>
+                <label>Address</label>
+                <input type="text" placeholder="Enter your address" id="Address"><br><br>
+                <label>pincode</label>
+                <input type="text" placeholder="Enter your pincode: " id="pincode"><br><br>
+                <label >Services</label>
+                <select  id="Services" >
+                  <option selected >Select option</option>
+                  <option value="Ac services" >Ac services</option>
+                  <option value="Carpenter services" >Carpenter services</option>
+                  <option value="painting services">painting services</option>
+                  <option value="washing services">washing services</option>
+                  <option value="refrigirator services">refrigirator services</option>
+                  <option value="water-Purifier-services">water-Purifier-services</option>
+                  <option value="Water-Tank services">Water-Tank services</option>
+                  <option value="Tv services">Tv services</option>
+                  <option value="Residential option">Residential option</option>
+                  <option value="Micro-oven services">Micro-oven services</option>
+                  <option value="Plumbing services">Plumbing services</option>
+                </select><br><br>
+                <label>Problem</label>
+                <textarea id="problem"></textarea><br><br>
+                <div class="footer">
+                <button type="reset" class="btn-success">clear</button>
+                <button type="submit" class="btn-info">Submit</button>
+                <h5 class="text-center mt-3">Copyright@ Developed By: Tosh business Solutions</h5>
+                </div>
+              </div>
+              </form>
+              
+            </div>
+            
+          </div>
+        </div>
+      <!-- </div> -->
+      
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    // import { initializeApp } from "https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js";
+  
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    
+  const firebaseConfig = {
+      apiKey: "AIzaSyAaeUY_iRN1uAf2aSdMb51T5qHU-TV2FQo",
+      authDomain: "myfirstproject-30541.firebaseapp.com",
+      databaseURL: "https://myfirstproject-30541-default-rtdb.firebaseio.com",
+      projectId: "myfirstproject-30541",
+      storageBucket: "myfirstproject-30541.appspot.com",
+      messagingSenderId: "857899099111",
+      appId: "1:857899099111:web:9486285e84347730249342"
+    };
+  // intialize firebase9
+  firebase.initializeApp(firebaseConfig);
+  
+  //reference your database
+  var dataFormDB = firebase.database().ref("form");
+  
+  document.getElementById('form').addEventListener('submit' , submitForm);
+  
+  function submitForm(e){
+      e.preventDefault();
+      var name = getElementVal('name');
+      var Mobile = getElementVal('Mobile');
+      var Address = getElementVal('Address');
+      var pincode = getElementVal('pincode');
+      var Services = getElementVal('Services');
+      var problem = getElementVal('problem');
+  
+      // console.log(Name,Mobile,Address,Pincode,Services,Problem);
+  
+    saveData(name, Mobile, Address, pincode, Services, problem );
+  
+    // enable alert
+    document.querySelector(".alert").style.display = "block";
+  
+    // remove alert
+  
+    setTimeout(()=>{
+      document.querySelector(".alert").style.display = "none";
+    },3000);
+  
+    // reset the form
+  
+    document.getElementById("form").reset();
+  }
+  
+  const saveData = (name, Mobile, Address, pincode,Services, problem )=>{
+    var newDataForm = dataFormDB.push();
+  
+  
+    newDataForm.set({
+      name:name,
+      Mobile:Mobile,
+      Address:Address,
+      pincode:pincode,
+      Services:Services,
+      problem:problem
+     })
+   }
+  
+  const getElementVal = (id) =>{
+      return document.getElementById(id).value;
+  }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    
+</body>
+</html>
